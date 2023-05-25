@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: This template provisions an EC2 instance in an EC2 Security Group provisioned in a different stack.
+Parameters:
+  NetworkStackName:
+    Description: Name of an active CloudFormation stack that contains the networking
+      resources, such as the subnet and security group, that will be used in this
+      stack.
+    Type: String
+    MinLength: 1
+    MaxLength: 255
+    AllowedPattern: "^[a-zA-Z][-a-zA-Z0-9]*$"
+    Default: SampleNetworkCrossStack
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: "macbook@400048mbp"
+      InstanceType: "t2.micro"
+      ImageId: "ami-0715c1897453cabd1"
+      Tags:
+        - Key: Env
+          Value: Dev
+        - Key: Purpose
+          Value: Testing
+      NetworkInterfaces:
+      - GroupSet:
+        - Fn::ImportValue:
+            Fn::Sub: "${NetworkStackName}-SecurityGroupIDs"
+        DeviceIndex: '0'
+        SubnetId:
+          Fn::ImportValue:
+            Fn::Sub: "${NetworkStackName}-SubnetID"
