@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: This template provisions an EC2 instance in an EC2 Security Group provisioned in a different stack.
+Description: This template provisions an EC2 instance with an EC2 Security Group and SubnetId provisioned in a different stack.
 Parameters:
   NetworkStackName:
     Description: Name of an active CloudFormation stack that contains the networking

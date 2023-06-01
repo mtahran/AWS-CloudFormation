@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: A very basic CloudFormation EC2 Template
+Resources:
+  WebServerInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0715c1897453cabd1 #it is for Virginia. Use ami-01107263728f3bef4 for Ohio.
+      KeyName: my-key-pair  # Replace with your SSH key pair name
+      SubnetId: !ImportValue MyPublicSubnet  # Make sure you have this resource is exported in the previous template.
+      SecurityGroupIds:
+        - !ImportValue MySG-WP    # Make sure you have this resource is exported in the previous template.
+      UserData:   #You can add bootstrap code here if you need.
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          dnf update -y
+          dnf install -y apache2 php
+          systemctl enable apache2
+          systemctl start apache2
+      
