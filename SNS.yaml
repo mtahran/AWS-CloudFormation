@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: A SNS sample template
+Resources: 
+  TestSnsCfn:
+    Type: AWS::SNS::Topic
+    Properties: 
+      FifoTopic: false
+
+  TestSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: mutahran@gmail.com
+      Protocol: email
+      TopicArn:
+        Ref: TestSnsCfn

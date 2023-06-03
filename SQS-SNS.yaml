@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: AWS CloudFormation Template to create SQS-SNS Subscription
+Resources: 
+  TestSnsCfn2:
+    Type: AWS::SNS::Topic
+    Properties: 
+      FifoTopic: false
+
+  TestSubscription2:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: 
+        Fn::GetAtt:
+              - TestSqsCfn2
+              - Arn
+      Protocol: sqs
+      TopicArn:
+        Ref: TestSnsCfn2
+  
+  TestSqsCfn2:
+    Type: AWS::SQS::Queue
+    Properties: 
+      DelaySeconds: 0
+      MaximumMessageSize: 262144
+      MessageRetentionPeriod: 345600
+      QueueName: TestSqsCfn2
+      ReceiveMessageWaitTimeSeconds: 0
+      VisibilityTimeout: 30
+      Tags:
+           - Key: Env
+             Value: Test

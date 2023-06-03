@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: A SQS sample template
+Resources:
+  TestSqsCfn:
+    Type: AWS::SQS::Queue
+    Properties: 
+      DelaySeconds: 0
+      FifoQueue: false
+      MaximumMessageSize: 256
+      MessageRetentionPeriod: 345600
+      QueueName: TestSqsCfn
+      ReceiveMessageWaitTimeSeconds: 0
+      VisibilityTimeout: 30
+      Tags:
+           - Key: Env
+             Value: Test
